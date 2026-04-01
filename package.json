@@ -1,6 +1,7 @@
 {
   "name": "@qwen-code/qwen-code",
-  "version": "0.14.0",
+  "version": "0.15.0",
+  "description": "DeepSeek WebView2 AI Agent - Terminal-based AI assistant with DeepSeek integration and full filesystem tools",
   "engines": {
     "node": ">=20.0.0"
   },
@@ -18,10 +19,12 @@
     "url": "git+https://github.com/QwenLM/qwen-code.git"
   },
   "config": {
-    "sandboxImageUri": "ghcr.io/qwenlm/qwen-code:0.14.0"
+    "sandboxImageUri": "ghcr.io/qwenlm/qwen-code:0.15.0"
   },
   "scripts": {
     "start": "cross-env node scripts/start.js",
+    "start:webview2": "node packages/webview2-deepseek/tool-api-server.js",
+    "start:ui": "node packages/webview2-deepseek/cli.js ui",
     "dev": "node scripts/dev.js",
     "debug": "cross-env DEBUG=1 node --inspect-brk scripts/start.js",
     "generate": "node scripts/generate-git-commit-info.js",
@@ -29,7 +32,8 @@
     "build": "node scripts/build.js",
     "build-and-start": "npm run build && npm run start",
     "build:vscode": "node scripts/build_vscode_companion.js",
-    "build:all": "npm run build && npm run build:sandbox && npm run build:vscode",
+    "build:webview2": "cd packages/webview2-deepseek && npm run build",
+    "build:all": "npm run build && npm run build:sandbox && npm run build:vscode && npm run build:webview2",
     "build:packages": "npm run build --workspaces",
     "build:sandbox": "node scripts/build_sandbox.js",
     "bundle": "npm run generate && node esbuild.config.js && node scripts/copy_bundle_assets.js",
@@ -50,6 +54,7 @@
     "test:terminal-bench": "cross-env VERBOSE=true KEEP_OUTPUT=true vitest run --config ./vitest.terminal-bench.config.ts --root ./integration-tests",
     "test:terminal-bench:oracle": "cross-env VERBOSE=true KEEP_OUTPUT=true vitest run --config ./vitest.terminal-bench.config.ts --root ./integration-tests -t 'oracle'",
     "test:terminal-bench:qwen": "cross-env VERBOSE=true KEEP_OUTPUT=true vitest run --config ./vitest.terminal-bench.config.ts --root ./integration-tests -t 'qwen'",
+    "test:webview2": "cd packages/webview2-deepseek && npm test",
     "lint": "eslint . --ext .ts,.tsx && eslint integration-tests",
     "lint:fix": "eslint . --fix && eslint integration-tests --fix",
     "lint:ci": "eslint . --ext .ts,.tsx --max-warnings 0 && eslint integration-tests --max-warnings 0",
@@ -75,10 +80,12 @@
     "baseline-browser-mapping": "^2.9.19"
   },
   "bin": {
-    "qwen": "dist/cli.js"
+    "qwen": "dist/cli.js",
+    "qwen-deepseek": "packages/webview2-deepseek/cli.js"
   },
   "files": [
     "dist/",
+    "packages/webview2-deepseek/",
     "README.md",
     "LICENSE"
   ],

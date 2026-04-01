@@ -2,15 +2,30 @@
 
 ## Project Overview
 
-**Qwen Code** is an open-source AI agent for the terminal, optimized for [Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder). It helps developers understand large codebases, automate tedious work, and ship faster.
+**Qwen Code** is an open-source AI agent framework for the terminal and desktop, now enhanced with **DeepSeek WebView2 integration**. It helps developers understand large codebases, automate tedious work, and ship faster.
 
-This project is based on [Google Gemini CLI](https://github.com/google-gemini/gemini-cli) with adaptations to better support Qwen-Coder models.
+This project is based on [Google Gemini CLI](https://github.com/google-gemini/gemini-cli) with adaptations to better support Qwen-Coder models and **DeepSeek integration**.
+
+### 🌟 New: DeepSeek WebView2 Integration
+
+This codebase has been enhanced with DeepSeek WebView2 support:
+
+- 🚀 **Official DeepSeek Chat** - Embed https://chat.deepseek.com in VSCode
+- 🔧 **Full Tool Access** - All 20+ Qwen Code tools available to DeepSeek
+- 📑 **VSCode Extension** - Sidebar panel with tool bridging
+- 🖥️ **Desktop App** - WebView2-based Windows application
+
+**Quick Access:**
+- VSCode Extension: `packages/vscode-deepseek-webview/`
+- WebView2 Package: `packages/webview2-deepseek/`
+- Quick Start: [packages/vscode-deepseek-webview/QUICKSTART.md](./packages/vscode-deepseek-webview/QUICKSTART.md)
 
 ### Key Features
 
-- **OpenAI-compatible, OAuth free tier**: Use an OpenAI-compatible API, or sign in with Qwen OAuth to get 1,000 free requests/day
+- **Flexible AI Support**: Works with DeepSeek, OpenAI, Anthropic, Gemini, and more
 - **Agentic workflow, feature-rich**: Rich built-in tools (Skills, SubAgents, Plan Mode) for a full agentic workflow
 - **Terminal-first, IDE-friendly**: Built for developers who live in the command line, with optional integration for VS Code, Zed, and JetBrains IDEs
+- **WebView2 Integration**: Embed DeepSeek chat directly in VSCode with tool access
 
 ## Technology Stack
 
@@ -21,25 +36,29 @@ This project is based on [Google Gemini CLI](https://github.com/google-gemini/ge
 - **Testing**: Vitest
 - **Linting**: ESLint + Prettier
 - **UI Framework**: Ink (React for CLI)
+- **WebView2**: Windows desktop app (Microsoft.Web.WebView2)
 - **React Version**: 19.x
 
 ## Project Structure
 
 ```
 ├── packages/
-│   ├── cli/              # Command-line interface (main entry point)
-│   ├── core/             # Core backend logic and tool implementations
-│   ├── sdk-java/         # Java SDK
-│   ├── sdk-typescript/   # TypeScript SDK
-│   ├── test-utils/       # Shared testing utilities
-│   ├── vscode-ide-companion/  # VS Code extension companion
-│   ├── webui/            # Web UI components
-│   └── zed-extension/    # Zed editor extension
-├── scripts/              # Build and utility scripts
-├── docs/                 # Documentation source
-├── docs-site/            # Documentation website (Next.js)
-├── integration-tests/    # End-to-end integration tests
-└── eslint-rules/         # Custom ESLint rules
+│   ├── cli/                      # Command-line interface (main entry point)
+│   ├── core/                     # Core backend logic and tool implementations
+│   ├── vscode-deepseek-webview/  # ⭐ NEW: DeepSeek WebView2 VSCode extension
+│   ├── webview2-deepseek/        # ⭐ NEW: DeepSeek WebView2 integration
+│   ├── sdk-java/                 # Java SDK
+│   ├── sdk-typescript/           # TypeScript SDK
+│   ├── test-utils/               # Shared testing utilities
+│   ├── vscode-ide-companion/     # VS Code extension companion (original)
+│   ├── webui/                    # Web UI components
+│   ├── zed-extension/            # Zed editor extension
+│   └── channels/                 # Chat platform channels (Telegram, WeChat, etc.)
+├── scripts/                      # Build and utility scripts
+├── docs/                         # Documentation source
+├── docs-site/                    # Documentation website (Next.js)
+├── integration-tests/            # End-to-end integration tests
+└── eslint-rules/                 # Custom ESLint rules
 ```
 
 ### Package Details
@@ -61,10 +80,29 @@ Core library containing:
 - **Tools**: File operations (read, write, edit, glob, grep), shell execution, web fetch, LSP integration, MCP client
 - **Subagents**: Task delegation to specialized agents
 - **Skills**: Reusable skill system
-- **Models**: Model configuration and registry for Qwen and OpenAI-compatible APIs
+- **Models**: Model configuration and registry for DeepSeek, OpenAI, and other providers
 - **Services**: Git integration, file discovery, session management
 - **LSP Support**: Language Server Protocol integration
 - **MCP**: Model Context Protocol implementation
+
+#### `@qwen-code/webview2-deepseek` (packages/webview2-deepseek/) ⭐ NEW
+
+DeepSeek WebView2 integration package:
+
+- **DeepSeek Client**: API client with automatic tool calling
+- **Tool Bridge**: Bridges DeepSeek tool calls to Qwen Code tools
+- **Tool API Server**: Express-based HTTP server for tool execution
+- **WebView2 UI**: Browser-based chat interface
+- **.NET Host App**: Windows desktop application
+
+#### `@qwen-code/vscode-deepseek-webview` (packages/vscode-deepseek-webview/) ⭐ NEW
+
+VSCode extension for embedding DeepSeek chat:
+
+- **Sidebar Webview**: DeepSeek chat in VSCode activity bar
+- **Panel Mode**: Full editor panel view
+- **Tool Integration**: All Qwen Code tools available
+- **Permission System**: Control tool access (allow/ask/deny)
 
 ## Building and Running
 
@@ -73,6 +111,7 @@ Core library containing:
 - **Node.js**: ~20.19.0 for development (use nvm to manage versions)
 - **Git**
 - For sandboxing: Docker or Podman (optional but recommended)
+- For WebView2: .NET 8 SDK (Windows only)
 
 ### Setup
 
@@ -89,17 +128,21 @@ npm install
 # Build all packages
 npm run build
 
-# Build everything including sandbox and VSCode companion
+# Build everything including WebView2
 npm run build:all
 
 # Build only packages
 npm run build:packages
 
+# Build WebView2 package
+npm run build:webview2
+
+# Build VSCode extension
+cd packages/vscode-deepseek-webview
+npm run compile
+
 # Development mode with hot reload
 npm run dev
-
-# Bundle for distribution
-npm run bundle
 ```
 
 ### Running
@@ -108,14 +151,18 @@ npm run bundle
 # Start interactive CLI
 npm start
 
+# Start WebView2 UI
+npm run start:ui
+
+# Start VSCode extension (in VSCode)
+cd packages/vscode-deepseek-webview
+# Press F5
+
 # Or after global installation
 qwen
 
 # Debug mode
 npm run debug
-
-# With environment variables
-DEBUG=1 npm start
 ```
 
 ### Testing
@@ -127,11 +174,11 @@ npm run test
 # Run integration tests (no sandbox)
 npm run test:e2e
 
+# Run WebView2 tests
+npm run test:webview2
+
 # Run all integration tests with different sandbox modes
 npm run test:integration:all
-
-# Terminal benchmark tests
-npm run test:terminal-bench
 ```
 
 ### Code Quality
@@ -175,65 +222,100 @@ import { something } from './utils/something.js';
 
 // Between packages - use package names
 import { Config } from '@qwen-code/qwen-code-core';
+import { ToolBridge } from '@qwen-code/webview2-deepseek';
 ```
 
-### Testing Patterns
+## DeepSeek WebView2 Architecture
 
-- Unit tests co-located with source files (`.test.ts` suffix)
-- Integration tests in separate `integration-tests/` directory
-- Uses Vitest with globals enabled
-- Mocking via `msw` for HTTP, `memfs`/`mock-fs` for filesystem
+### VSCode Extension Flow
 
-### Architecture Patterns
+```
+┌─────────────────────────────────────────────────┐
+│              VSCode Extension                    │
+│                                                  │
+│  ┌──────────────────────────────────────────┐   │
+│  │  Sidebar Webview                         │   │
+│  │  ┌────────────────────────────────────┐  │   │
+│  │  │  https://chat.deepseek.com         │  │   │
+│  │  │  (Official DeepSeek UI in iframe)  │  │   │
+│  │  └────────────────────────────────────┘  │   │
+│  └──────────────────────────────────────────┘   │
+│                    │                             │
+│                    │ postMessage (tool calls)    │
+│                    ▼                             │
+│  ┌──────────────────────────────────────────┐   │
+│  │  Extension Host (Node.js)                │   │
+│  │  • ToolBridge                            │   │
+│  │  • Tool API Server (localhost:3456)      │   │
+│  └──────────────────────────────────────────┘   │
+│                    │                             │
+│                    ▼                             │
+│  ┌──────────────────────────────────────────┐   │
+│  │  Qwen Code Core Tools                    │   │
+│  │  read_file, write_file, edit, grep...    │   │
+│  └──────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────┘
+```
 
-#### Tools System
+### Tool Call Flow
 
-All tools extend `BaseDeclarativeTool` or implement the tool interfaces:
+1. User asks DeepSeek: "Read the main.ts file"
+2. DeepSeek generates tool_call request
+3. Extension intercepts via postMessage
+4. ToolBridge executes Qwen Code tool
+5. Result returns to DeepSeek
+6. DeepSeek continues conversation with tool result
 
-- Located in `packages/core/src/tools/`
-- Each tool has a corresponding `.test.ts` file
-- Tools are registered in the tool registry
+## Authentication Methods
 
-#### Subagents System
+### DeepSeek WebView2 (Recommended)
 
-Task delegation framework:
+**No API key needed!** The WebView2 extension uses your browser session at https://chat.deepseek.com.
 
-- Configuration stored as Markdown + YAML frontmatter
-- Supports both project-level and user-level subagents
-- Event-driven architecture for UI updates
+### API Key (Alternative)
 
-#### Configuration System
-
-Hierarchical configuration loading:
-
-1. Default values
-2. User settings (`~/.qwen/settings.json`)
-3. Project settings (`.qwen/settings.json`)
-4. Environment variables
-5. CLI flags
-
-### Authentication Methods
-
-1. **Qwen OAuth** (recommended): Browser-based OAuth flow
-2. **OpenAI-compatible API**: Via `OPENAI_API_KEY` environment variable
+1. **DeepSeek API**: Via `DEEPSEEK_API_KEY` environment variable
+2. **OpenAI-compatible**: Via `OPENAI_API_KEY` environment variable
+3. **Anthropic**: Via `ANTHROPIC_API_KEY` environment variable
+4. **Google GenAI**: Via `GEMINI_API_KEY` environment variable
 
 Environment variables for API mode:
 
 ```bash
-export OPENAI_API_KEY="your-api-key"
-export OPENAI_BASE_URL="https://api.openai.com/v1"  # optional
-export OPENAI_MODEL="gpt-4o"                        # optional
+export DEEPSEEK_API_KEY="sk-your-api-key"
+export DEEPSEEK_BASE_URL="https://api.deepseek.com/v1"  # optional
+export DEEPSEEK_MODEL="deepseek-chat"                    # optional
+```
+
+### Configuration File
+
+Create `~/.qwen/settings.json`:
+
+```json
+{
+  "deepSeek": {
+    "apiKey": "sk-your-api-key",
+    "baseUrl": "https://api.deepseek.com/v1",
+    "model": "deepseek-chat"
+  }
+}
 ```
 
 ## Debugging
 
-### VS Code
+### VSCode
 
 Press `F5` to launch with debugger attached, or:
 
 ```bash
 npm run debug  # Runs with --inspect-brk
 ```
+
+### WebView2 Extension
+
+1. Open `packages/vscode-deepseek-webview` in VSCode
+2. Press `F5` to launch Extension Development Host
+3. Check Output panel for logs
 
 ### React DevTools (for CLI UI)
 
@@ -250,8 +332,11 @@ DEBUG=1 qwen
 
 ## Documentation
 
-- User documentation: <https://qwenlm.github.io/qwen-code-docs/>
-- Local docs development:
+- **User documentation**: https://qwenlm.github.io/qwen-code-docs/
+- **VSCode Extension Guide**: [packages/vscode-deepseek-webview/README.md](./packages/vscode-deepseek-webview/README.md)
+- **Quick Start**: [packages/vscode-deepseek-webview/QUICKSTART.md](./packages/vscode-deepseek-webview/QUICKSTART.md)
+- **WebView2 Package**: [packages/webview2-deepseek/README.md](./packages/webview2-deepseek/README.md)
+- **Local docs development**:
 
   ```bash
   cd docs-site
@@ -276,6 +361,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Key points:
 | Command             | Description                                                          |
 | ------------------- | -------------------------------------------------------------------- |
 | `npm start`         | Start CLI in interactive mode                                        |
+| `npm run start:ui`  | Start WebView2 UI in browser                                         |
 | `npm run dev`       | Development mode with hot reload                                     |
 | `npm run build`     | Build all packages                                                   |
 | `npm run test`      | Run unit tests                                                       |
@@ -294,4 +380,19 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Key points:
 - `/bug` - Submit bug report
 - `/exit` or `/quit` - Exit Qwen Code
 
+## VSCode Extension Commands
+
+- `DeepSeek: Open` - Open chat in editor panel
+- `DeepSeek: Focus` - Focus the chat panel
+- `DeepSeek: New Conversation` - Start a new conversation
+- `DeepSeek: Start Tool API Server` - Start the tool server
+
 ---
+
+## Acknowledgments
+
+This project builds upon:
+
+- **[Qwen Code](https://github.com/QwenLM/qwen-code)** (Original) - Core tool infrastructure
+- **[Google Gemini CLI](https://github.com/google-gemini/gemini-cli)** - Original inspiration
+- **[DeepSeek](https://deepseek.com/)** - AI model provider

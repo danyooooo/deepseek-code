@@ -1,0 +1,143 @@
+{
+  "name": "qwen-code-deepseek-webview",
+  "displayName": "Qwen Code DeepSeek WebView",
+  "description": "Embed DeepSeek chat (chat.deepseek.com) in VSCode with Qwen Code tool integration",
+  "version": "0.1.0",
+  "publisher": "qwenlm",
+  "icon": "assets/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QwenLM/qwen-code.git",
+    "directory": "packages/vscode-deepseek-webview"
+  },
+  "license": "Apache-2.0",
+  "preview": true,
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "deepseek",
+    "ai",
+    "chat",
+    "qwen-code",
+    "tools",
+    "webview"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:deepseek-webview.sidebar",
+    "onCommand:deepseek-webview.open",
+    "onCommand:deepseek-webview.focus",
+    "onCommand:deepseek-webview.newConversation"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "deepseek-webview-sidebar",
+          "title": "DeepSeek Chat",
+          "icon": "$(comment-discussion)"
+        }
+      ]
+    },
+    "views": {
+      "deepseek-webview-sidebar": [
+        {
+          "type": "webview",
+          "id": "deepseek-webview.sidebar",
+          "name": "DeepSeek Chat"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "deepseek-webview.open",
+        "title": "Open DeepSeek Chat",
+        "category": "DeepSeek",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "deepseek-webview.focus",
+        "title": "Focus DeepSeek Chat",
+        "category": "DeepSeek"
+      },
+      {
+        "command": "deepseek-webview.newConversation",
+        "title": "New Conversation",
+        "category": "DeepSeek",
+        "icon": "$(add)"
+      },
+      {
+        "command": "deepseek-webview.startToolServer",
+        "title": "Start Tool API Server",
+        "category": "DeepSeek"
+      }
+    ],
+    "configuration": {
+      "title": "DeepSeek WebView",
+      "properties": {
+        "deepseek-webview.url": {
+          "type": "string",
+          "default": "https://chat.deepseek.com",
+          "description": "DeepSeek chat URL"
+        },
+        "deepseek-webview.toolServerPort": {
+          "type": "number",
+          "default": 3456,
+          "description": "Tool API server port"
+        },
+        "deepseek-webview.autoStartServer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically start tool API server on activation"
+        },
+        "deepseek-webview.workspace": {
+          "type": "string",
+          "default": "${workspaceFolder}",
+          "description": "Workspace directory for tool access"
+        },
+        "deepseek-webview.toolPermissions": {
+          "type": "object",
+          "default": {
+            "read_file": "allow",
+            "write_file": "ask",
+            "edit": "ask",
+            "glob": "allow",
+            "grep": "allow",
+            "ls": "allow",
+            "shell": "ask",
+            "web_fetch": "ask"
+          },
+          "description": "Default permissions for each tool"
+        }
+      }
+    }
+  },
+  "main": "./dist/extension.js",
+  "browser": "./dist/web/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "test": "node ./dist/test/runTest.js"
+  },
+  "dependencies": {
+    "@qwen-code/qwen-code-core": "*",
+    "@qwen-code/webview2-deepseek": "*",
+    "express": "^4.21.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "@types/express": "^5.0.3",
+    "@types/cors": "^2.8.19",
+    "typescript": "^5.3.3",
+    "@vscode/test-electron": "^2.3.9"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  }
+}

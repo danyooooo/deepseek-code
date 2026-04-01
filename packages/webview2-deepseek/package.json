@@ -1,0 +1,89 @@
+{
+  "name": "@qwen-code/webview2-deepseek",
+  "version": "0.15.0",
+  "description": "DeepSeek WebView2 Chat integration for Qwen Code - Desktop app with full filesystem tools",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "qwen-deepseek": "./cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./ide": {
+      "import": "./dist/ide.js",
+      "types": "./dist/ide.d.ts"
+    },
+    "./vscode": {
+      "import": "./dist/vscode.js",
+      "types": "./dist/vscode.d.ts"
+    }
+  },
+  "files": [
+    "dist/",
+    "cli.js",
+    "ide.js",
+    "vscode.js",
+    "launcher.js",
+    "tool-api-server.js",
+    "tool-api-server-standalone.js",
+    "webview/",
+    "host-app/",
+    "examples/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "dev": "npm run build:watch",
+    "clean": "rimraf dist",
+    "start": "node cli.js chat",
+    "start:ui": "node cli.js ui",
+    "start:server": "node tool-api-server.js",
+    "start:ide": "node cli.js ide",
+    "test": "node test-api.js"
+  },
+  "keywords": [
+    "deepseek",
+    "webview2",
+    "qwen-code",
+    "ai",
+    "chat",
+    "tools",
+    "desktop",
+    "windows"
+  ],
+  "author": "Qwen Team",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QwenLM/qwen-code.git",
+    "directory": "packages/webview2-deepseek"
+  },
+  "dependencies": {
+    "@qwen-code/qwen-code-core": "*",
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "open": "^10.1.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^10.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.8.3",
+    "rimraf": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ]
+}

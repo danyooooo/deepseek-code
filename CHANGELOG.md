@@ -1,5 +1,75 @@
 # Changelog
 
+## 0.15.0 - DeepSeek WebView2 Integration
+
+### 🌟 New Features
+
+#### DeepSeek WebView2 VSCode Extension
+- **NEW**: Complete VSCode extension for embedding https://chat.deepseek.com
+- Sidebar webview with DeepSeek chat in activity bar
+- Panel mode for full editor view
+- Tool bridge for executing Qwen Code tools from DeepSeek
+- Permission system (allow/ask/deny) for tool control
+- Commands: `DeepSeek: Open`, `Focus`, `New Conversation`, `Start Tool Server`
+- Configurable settings for URL, port, workspace, and permissions
+
+**Package**: `packages/vscode-deepseek-webview/`
+
+#### DeepSeek WebView2 Integration
+- **NEW**: Tool API server for HTTP-based tool execution
+- DeepSeek client with automatic tool calling
+- Tool bridge converting Qwen tools to DeepSeek format
+- WebView2 desktop app (Windows)
+- .NET host application for native Windows experience
+- Browser-based chat UI
+
+**Package**: `packages/webview2-deepseek/`
+
+### 📦 New Packages
+
+- `@qwen-code/vscode-deepseek-webview` - VSCode extension for DeepSeek chat embedding
+- `@qwen-code/webview2-deepseek` - DeepSeek WebView2 integration library
+
+### 🔧 Enhancements
+
+- Updated main README with DeepSeek WebView2 focus
+- Added comprehensive documentation for VSCode extension
+- Created QUICKSTART.md for 5-minute setup guide
+- Added architecture diagrams for WebView2 integration
+- Updated AGENTS.md with new package structure
+- Created migration guide for existing users
+
+### 📚 Documentation
+
+- `packages/vscode-deepseek-webview/README.md` - Extension documentation
+- `packages/vscode-deepseek-webview/QUICKSTART.md` - Quick start guide
+- `packages/vscode-deepseek-webview/IMPLEMENTATION_SUMMARY.md` - Technical details
+- `packages/webview2-deepseek/VSCODE_EXTENSION_GUIDE.md` - Extension development guide
+- `packages/webview2-deepseek/CLARIFICATION.md` - Architecture comparison
+- `packages/webview2-deepseek/DEEPSEEK_WEBVIEW_EXTENSION.md` - Implementation guide
+- `MIGRATION_GUIDE.md` - Migration from previous versions
+
+### 🐛 Bug Fixes
+
+- Fixed package.json workspace configuration
+- Resolved TypeScript compilation issues in core package
+- Updated build scripts for new package structure
+
+### 🔒 Security
+
+- Tool permission system for controlling DeepSeek tool access
+- Local execution of all tools (no remote code execution)
+- Sandbox webview for iframe isolation
+
+### 📝 Acknowledgments
+
+This release integrates DeepSeek while preserving all original Qwen Code functionality:
+- Core tool infrastructure from [Qwen Code](https://github.com/QwenLM/qwen-code)
+- Architecture inspiration from [Google Gemini CLI](https://github.com/google-gemini/gemini-cli)
+- AI models from [DeepSeek](https://deepseek.com/)
+
+---
+
 ## 0.0.14
 
 - Added plan mode support for task planning
@@ -48,74 +118,3 @@
 - Fixed credential clearing when switching authentication types.
 - Enhanced subagent capabilities to use tools requiring user confirmation.
 - Improved ReadManyFiles tool with shared line limits across files.
-- Re-implemented tokenLimits class for better compatibility with Qwen and other model types.
-- Fixed chunk validation to avoid unnecessary retries.
-- Resolved EditTool naming inconsistency causing agent confusion loops.
-- Fixed unexpected re-authentication when auth-token is expired.
-- Added Terminal Bench integration tests.
-- Updated multilingual documentation links in README.
-- Fixed various Windows compatibility issues.
-- Miscellaneous improvements and bug fixes.
-
-## 0.0.10
-
-- Synced upstream `gemini-cli` to v0.2.1.
-- Add todo write tool for task management and progress tracking.
-
-## 0.0.9
-
-- Synced upstream `gemini-cli` to v0.1.21.
-- Fixed token synchronization among multiple Qwen sessions.
-- Improved tool execution with early stop on invalid tool calls.
-- Added explicit `is_background` parameter for shell tool.
-- Enhanced memory management with sub-commands to switch between project and global memory operations.
-- Renamed `GEMINI_DIR` to `QWEN_DIR` for better branding consistency.
-- Added support for Qwen Markdown selection.
-- Fixed parallel tool usage and improved tool reliability.
-- Upgraded integration tests to use Vitest framework.
-- Enhanced VS Code IDE integration with launch configurations.
-- Added terminal setup command for Shift+Enter and Ctrl+Enter support.
-- Fixed GitHub Workflows configuration issues.
-- Improved settings directory and command descriptions.
-- Fixed locale handling in yargs configuration.
-- Added support for `trustedFolders.json` configuration file.
-- Enhanced cross-platform compatibility for sandbox build scripts.
-- Improved error handling and fixed ambiguous literals.
-- Updated documentation links and added IDE integration documentation.
-- Miscellaneous improvements and bug fixes.
-
-## 0.0.8
-
-- Synced upstream `gemini-cli` to v0.1.19.
-- Updated documentation branding from **Gemini CLI** to **Qwen Code**.
-- Added multilingual docs links in `README.md`.
-- Added deterministic cache control for the DashScope provider.
-- Added option to choose a project-level or global save location.
-- Limited `grep` results to 25 items by default.
-- `grep` now respects `.qwenignore`.
-- Miscellaneous improvements and bug fixes.
-
-## 0.0.7
-
-- Synced upstream `gemini-cli` to v0.1.18.
-- Fixed MCP tools.
-- Fixed Web Fetch tool.
-- Fixed Web Search tool by switching from Google/Gemini to the Tavily API.
-- Made tool calls tolerant of invalid-JSON parameters occasionally returned by the LLM.
-- Prevented concurrent query submissions in rare cases.
-- Corrected Qwen logger exit-handler setup.
-- Separated static QR code and dynamic spinner components.
-
-## 0.0.6
-
-- Added usage statistics logging for Qwen integration.
-- Made `/init` respect the configured context filename and aligned docs with `QWEN.md`.
-- Fixed `EPERM` error when running `qwen --sandbox` on macOS.
-- Fixed terminal flicker while waiting for login.
-- Fixed `glm-4.5` model request error.
-
-## 0.0.5
-
-- Added Qwen OAuth login and up to 1,000 free requests per day.
-- Synced upstream `gemini-cli` to v0.1.17.
-- Added the `systemPromptMappings` configuration option.
